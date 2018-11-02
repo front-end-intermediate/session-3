@@ -49,7 +49,7 @@ ${navItems.map(
   
   var elem = document.querySelector('.site-wrap');
   const nytapi = 'd7d88f32a04d4c6aab4e46735441d0ee';
-  const limit = 3;
+  const limit = 10;
   var categories = ['food', 'fashion', 'travel'];
   var log = console.log;
   
@@ -78,6 +78,7 @@ ${navItems.map(
     elem.prepend(sectionHead)    
     
     stories = JSON.parse(stories.responseText).results.slice(0, limit);
+    log(stories)
     stories.forEach(function (story) {
       var storyEl = document.createElement('div');
       storyEl.className = 'entry';
@@ -93,7 +94,6 @@ ${navItems.map(
   }
   
   function getArticles() {
-    log('hi')
     categories.forEach(function(category, index){
       requestStories(category)
     })

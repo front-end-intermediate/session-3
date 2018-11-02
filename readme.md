@@ -331,23 +331,26 @@ Also note the [get](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) v
 Set up an NPM start command:
 
 ```js
-
+"scripts": {
+  "start": "node index.js"
+},
 ```
+
+Add a second route and restart the server:
 
 ```js
 const express = require('express');
-// create a var for the app to be built using express
-// app is the global variable namespace for the program we are building
 const app = express();
 const port = 9000;
-
-app.get('/', (req, res) => res.send('Hello World!')); // our first route
-
-app.get('/watchlist', function(req, res) {
-  // our second route
+// our first route
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+}); 
+// our second route
+app.get('/music', function(req, res) {  
   res.send(`
-    <h1>Watchlist</h1>
-    <p>Commentary on Watchlists will go here.</p>
+    <h1>music</h1>
+    <p>Commentary on music will go here.</p>
     `);
 });
 
@@ -356,75 +359,181 @@ app.listen(port, function() {
 });
 ```
 
+Visit [http://localhost:9000/music](http://localhost:9000/music)
 
-
-Add a second route that includes a variable:
+Edit the second route to include a variable and restart the server:
 
 ```js
-app.get('/entry/:name', function(req, res) {
-  let name = req.params.name;
-  res.send(`
-    <h1>${name}</h1>
-    <p>Commentary on ${name} will go here.</p>
+app.get('/music/:type', function(req, res) {
+  let type = req.params.type;
+    res.send(`
+    <h1>Music</h1>
+    <p>Commentary on ${type} music will go here.</p>
     `);
 });
 ```
 
-```js
-app.get('reverse/:name', (req, res) => {
-  const reverse = [..req.params.name].reverse().join('');
-  res.send(reverse)
-})
-```
-
-Test in the browser after restarting the node process.: `http://localhost:9000/entry/watchlist`.
-
-<!-- Multiple parameters:
-
-app.get('.reverse/:name', (req, res) => {
-  const reverse = [...req.params.name].reverse().join('');
-  res.send(reverse)
-})
-
-```js
-app.get('/entry/:name?/:link', function(req, res) {
-  let name = req.params.name;
-  let link = `${req.params.link}`;
-  res.send(`
-    <h1>${name}</h1>
-    <p>Commentary on ${name} will go here.</p>
-    <p>${link}</p>
-    `);
-});
-```
-
-Test in the browser after restarting the node app: `http://localhost:9000/entry/watchlist/test`. -->
+Restart the server and test it with [http://localhost:9000/music/baroque](http://localhost:9000/music/baroque).
 
 ## Nodemon
 
-We need to restart the server whenever we make a change to app.js. Let’s streamline it by using nodemon.
+We need to restart the server whenever we make a change to `index.js`. Let’s streamline it by installing the nodemon NPM package.
 
-`$ npm install -g nodemon`
+`$ npm i -S nodemon`
 
-To use nodemon we simply call it (instead of node) in the terminal with the name of our file:
+To use nodemon we simply call it (instead of node) in the terminal with the name of our file. Edit the start script in `package.json`:
 
-`nodemon app.js`
+```js
+"scripts": {
+  "start": "nodemon index.js"
+},
+```
 
 We no longer need to restart our server after making changes. Nodemon will watch for changes and take care of that for us.
 
-## Test Nodemon
-
-Add this after the last route:
+Add a third route and restart:
 
 ```js
-app.get('*', function(req, res) {
-  res.send(`
-    <h1>Page not found</h1>
-    `);
-});
+app.get('/reverse/:name', (req, res) => {
+  const reverse = [...req.params.name].reverse().join('');
+  res.send(reverse)
+})
 ```
 
-Upon save nodemon should restart the server. Test a bad route.
+
+
+
+
+```js
+const express = require('express');
+const app = express();
+const port = 9000;
+
+const fs = require('fs')
+// const _ = require('lodash')
+
+const articles = [];
+
+var content = fs.readFile('./json/travel.json', { encoding: 'utf8' }, function (err, data) {
+  if (err) throw err
+  JSON.parse(data).forEach(function (article) {
+    articles.push(article.title);
+  })
+})
+
+// our first route
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+
+// our second route
+app.get('/travel', function (req, res) {
+  var buffer = ''
+  articles.forEach(function (article) {
+    buffer += article + '<br>'
+  })
+  res.send(buffer);
+});
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}!`);
+});
+
+```
+
+
+
+
+
+```js
+const express = require('express');
+const app = express();
+const port = 9000;
+
+const fs = require('fs');
+
+const articles = [];
+
+var content = fs.readFile('./json/travel.json', { encoding: 'utf8' }, function (err, data) {
+  if (err) throw err
+  JSON.parse(data).forEach(function (article) {
+    articles.push(article.title);
+  })
+})
+
+// our first route
+app.get('/', function (req, res) {
+  var buffer = ''
+  articles.forEach(function (article) {
+    buffer += `<a href="/${article}">${article}</a> <br>`
+  })
+  res.send(buffer);
+});
+
+app.get(/Oslo.*/, function (req, res){
+  console.log('OSLO')
+  next()
+})
+
+// our second route
+app.get('/:article', function (req, res) {
+  const article = req.params.article
+  res.send(article)
+});
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}!`);
+});
+
+```
+
+
+
+
+
+```js
+const express = require('express');
+const app = express();
+const port = 9000;
+
+const fs = require('fs');
+
+const articles = [];
+
+var content = fs.readFile('./json/travel.json', { encoding: 'utf8' }, function (err, data) {
+  if (err) throw err
+  JSON.parse(data).forEach(function (article) {
+    articles.push(article.title);
+  })
+})
+
+// our first route
+app.get('/', function (req, res) {
+  var buffer = ''
+  articles.forEach(function (article) {
+    buffer += `<a href="/${article}">${article}</a> <br>`
+  })
+  res.send(buffer);
+});
+
+app.get(/Oslo.*/, function (req, res, next){
+  console.log('OSLO')
+  next()
+})
+
+// our second route
+app.get('/:article', function (req, res) {
+  const article = req.params.article
+  res.send(article)
+});
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}!`);
+});
+
+```
+
+
 
 ## Express Middleware
 
@@ -432,7 +541,7 @@ Upon save nodemon should restart the server. Test a bad route.
 
 DEMO: We will eventually be using [static](https://expressjs.com/en/starter/static-files.html) middleware (the only middleware _built in_ to Express) to serve files in our exercise.
 
-Add to app.js (above the app.get... line):
+Add to `index.js` (above the app.get... line):
 
 ```js
 app.use(express.static('app'));
@@ -468,7 +577,7 @@ app.get('/', (req, res) => {
 });
 ```
 
-(`__dirname` is a global variable for the directory that contains the app.js.)
+(`__dirname` is a global variable for the directory that contains index.js.)
 
 Create index.html in the top level:
 
@@ -486,6 +595,41 @@ Create index.html in the top level:
 ```
 
 You should be able to see the HTML file in the browser at the specified port number.
+
+## Proxy browser-sync
+
+Works on port 300 (the browser-sync port)
+
+```js
+{
+  "name": "session-3",
+  "version": "1.0.0",
+  "description": "<!-- and an Introduction to GIT -->",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js & browser-sync start --proxy localhost:9000 --files 'app'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/front-end-intermediate/session-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/front-end-intermediate/session-3/issues"
+  },
+  "homepage": "https://github.com/front-end-intermediate/session-3#readme",
+  "dependencies": {
+    "browser-sync": "^2.26.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.5"
+  }
+}
+```
+
+
+
 
 ## CRUD - CREATE
 
@@ -522,7 +666,7 @@ The action attribute tells the browser where to navigate to in our Express app.
 
 The method attribute tells the browser what to request to send. In this case, it’s a POST request.
 
-On our server, we can handle this POST request with a post method that Express provides. It takes the same arguments as the GET method:
+On our server, we can handle this POST request with the post method that Express provides. It takes the same arguments as the GET method:
 
 ```js
 app.post('/entries', (req, res) => {
@@ -536,7 +680,7 @@ Refresh your browser then click the form button. You should see 'Hello' in your 
 
 Express doesn’t handle reading data from the `<form>` element on it’s own. We have to add a middleware package called body-parser to gain this functionality.
 
-`$ npm install body-parser --save`
+`$ npm i body-parser --save`
 
 Make the following changes to app.js:
 
@@ -616,7 +760,11 @@ MongoClient.connect('mongodb://dannyboynyc:dd2345@ds139969.mlab.com:39969/bcl', 
 });
 ```
 
-Start the server using `nodemon app.js` and check for any errors.
+Start the server and check for any errors.
+
+```js
+MongoClient.connect('mongodb://dannyboynyc:dd2345@ds139969.mlab.com:39969/bcl', { useNewUrlParser: true }, (err, database) => {
+```
 
 Now, let’s create a collection - a named location to store data - to store content for our application.
 
