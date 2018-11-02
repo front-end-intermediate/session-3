@@ -297,24 +297,44 @@ server.listen(port, hostname, () => {
 
 ### Express
 
-The local server we are using (browser sync or live server) won't cut it when it comes to all the features needed to develop a website with the http services we will need.
+```sh
+npm init -y
+npm i -S express
+```
 
 [Express](https://expressjs.com/en/api.html#req) is a framework for building web applications on Node.js. It simplifies the server creation process and allows you to use JavaScript as your server-side language.
 
 Common web-development tasks are not directly supported by Node. If you want to add specific handling for different HTTP verbs (e.g. GET, POST, DELETE, etc.), separately handle requests at different URL paths ("routes"), serve static files, or use templates to dynamically create the response, you will need to write the code yourself or use Express.
 
-<!-- Aside: Here is the [generator](https://expressjs.com/en/starter/generator.html). 
-
-Note the directory structure and the use of [Pug](https://pugjs.org/api/getting-started.html) as the default templating tool.
-
-Let's look at the canonical "Hello world" [example](https://expressjs.com/en/starter/hello-world.html). -->
-
-Install express using npm `$ npm install --save express`
-
-Create `app.js` in the root folder of our project.
+Create `index.js` in the root folder of our project.
 
 ```js
-// require the npm library
+const express = require('express');
+const app = express();
+const port = 9000;
+
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}!`);
+});
+```
+
+Run with `$ node index.js` and test the `watchlist` route above.
+
+Note that `console.log` is using the terminal, _not_ the browser's console. 
+
+Also note the [get](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) verb.
+
+Set up an NPM start command:
+
+```js
+
+```
+
+```js
 const express = require('express');
 // create a var for the app to be built using express
 // app is the global variable namespace for the program we are building
@@ -336,11 +356,7 @@ app.listen(port, function() {
 });
 ```
 
-Run with `$ node app.js` and test the `watchlist` route above.
 
-Note that console.log is now using the terminal, _not_ the browser's console. We are working server side.
-
-Note the [get](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) verb used in our [basic express route](https://expressjs.com/en/starter/basic-routing.html).
 
 Add a second route that includes a variable:
 
