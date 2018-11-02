@@ -6,165 +6,8 @@ Today we continue to work with NPM, responsive design and start looking at Expre
 
 ## Homework
 
-* watch a [Crash Course on Express](https://youtu.be/gnsO8-xJ8rs) and follow along in your editor
-* download the done branch of this repo, review the steps below, and get the communication between the form and _your own account_ on mLab working (see the [instructions for connecting](https://docs.mlab.com/connecting/) to mLab - particulaly the sections 'MongoDB driver' for `app-alt.js` and 'mLab Data API' for `main-alt.js`)
-* Optional - do the Git / Github tutorial at [the Git Website](https://try.github.io/levels/1/challenges/1)
-
-<!-- ## GIT and GITHUB
-
-Git - a version control system originally invented for use developing Linux by Linus Torvalds - integrates with Github to permit collaboration.
-
-There is a simple tutorial for Git on [the Git Website](https://try.github.io/levels/1/challenges/1) which is highly recommended for those new to git and github.
-
-1. make sure terminal is in the correct directory using `cd` (drag-and-drop, copy paste)
-1. initialize the repo:
-
-```sh
-git init
-```
-
-Configuring Git for the first time (only if you haven't done this before):
-
-```sh
-git config --global user.name " ***** "
-git config --global user.email " ***** "
-git config --list
-```
-
-* Add (watch) all your files:
-
-```sh
-git add .
-```
-
-Perform an initial commit. (Once you have made changes you will need to add and commit them again.)
-
-```sh
-git commit -m 'initial commit'
-```
-
-Note: `git commit` without the `-m` flag goes into VI - a text popular UNIX text editor.
-
-To avoid this always using the -m flag when committing. (If you end up in VI, hit `ESC` and type `:q` to exit and try again.)
-
-* Git Status  - use this command liberally until your familiar with the system.
-
-```sh
-$ git status
-> On branch master
-> nothing to commit, working directory clean
-```
-
-* Create and checkout a new branch:
-
-```sh
-git branch <new branchname>
-git checkout <new branchname>
-git branch
-```
-
-Merge branches:
-
-* make sure the branch you want to merge is clear (`$ git status` > clean)
-* checkout the branch you want to merge into
-* run status on that branch too (make sure it is clear)
-
-```sh
-git checkout master
-git status
-git merge <new branchname>
-```
-
-* delete branches:
-
-```sh
-git branch -d <branchname>
-```
-
-or (to delete an unmerged branch)
-
-```sh
-git branch -D <branchname>
-```
-
-Note: be sure to delete while _not_ on the targeted branch
-
-* pushing files to remote repos - Github
-
-Note: always create a .gitignore file to prevent local working/utility files from being pushed e.g.:
-
-```js
-.DS_store
-node_modules
-```
-
-* Log into Github, create and new repo and follow the instructions e.g.:
-
-```sh
-git remote add origin https://github.com/<nameofgithubrepo>
-git push -u origin master
-```
-
-Finally - when downloading a github repo use the `clone` method to move it to your local disk while retaining the git history and branches. -->
-
-<!-- ## Babel
-
-* cd into the session directory install the dev-dependencies and run the script:
-
-```sh
-npm install
-```
-
-Install the dependencies babel-cli and babel-preset-es2015 and add presets to package.json.
-
-`$ npm install babel-cli --save-dev`
-
-`$ npm install --save-dev babel-preset-es2015`
-
-Note the documentation for [babel-cli](https://babeljs.io/docs/usage/cli/) and the message:
-
-`🙌 Thanks for using Babel: we recommend using babel-preset-env now: please read babeljs.io/env to update!`
-
-Add a babel script (note the output path references a min folder we need to create) and babel presets to package.json:
-
-```js
-{
-  ...
-  "scripts": {
-    ...
-    "babel": "babel app/js/main.js --watch --source-maps --out-file app/js/main-compiled.js",
-    ...
-  },
-
-  "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-preset-es2015": "^6.22.0",
-    ...
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  }
-}
-```
-
-Add babel to our script:
-
-```bash
-"boom!": "concurrently \"npm run start\" \"npm run babel\" "
-```
-
-Change the link to the main.js in index.html to point to the new file that babel will create.
-
-`<script src="js/main-compiled.js"></script>`
-
-and run `npm run boom!`.
-
-Remember, you can pick and choose commands or create new batches using concurrently. For users using VS Code for SASS transpiling and browser refresh:  `npm run babel` or 
-
-`"boomy!": "concurrently \"npm run start\" \"npm run babel\" "`
- -->
+* Watch a [Crash Course on Express](https://youtu.be/gnsO8-xJ8rs) and follow along in your editor
+* Download the done branch of this repo, review the steps below, and get the communication between the form and _your own account_ on mLab working (see the [instructions for connecting](https://docs.mlab.com/connecting/) to mLab - particulaly the sections 'MongoDB driver' for `app-alt.js` and 'mLab Data API' for `main-alt.js`)
 
 Clone today's session:
 
@@ -409,13 +252,31 @@ You cannot animate between `display: block` and `display: none`. These are binar
 }
 ```
 
+
+
+
 ## NODE and Express JS
 
 ### NODE
 
+As an implementation of a JS engine ooutside the browser, Node can run JS on the server:
+
+```sh
+cd other
+node script.js
+```
+
+```js
+var addItems = function (num1, num2) {
+  console.log( num1 + num2 )
+}
+
+addItems(1,2)
+```
+
 A simple node.js [server](https://nodejs.org/en/about/).
 
-DEMO: Save this as `app.js` in the project folder and run it using `node script.js`
+DEMO: Save this into `script.js` in the `other` folder and run it using `node script.js`
 
 ```js
 const http = require('http');
@@ -713,9 +574,9 @@ Create a free account with MongoLab. Once you’re done, create a new MongoDB da
 
 Once you’re done creating the deployment, click into it and create a database user and database password.
 
-![user](notes/mlab-user.png)
+![user](other/mlab-user.png)
 
-![user](notes/mlab-user2.jpg)
+![user](other/mlab-user2.jpg)
 
 Remember these because you’re going to use it to connect the database you’ve just created.
 
