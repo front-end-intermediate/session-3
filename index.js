@@ -5,6 +5,8 @@ const port = 9000;
 const log = console.log;
 const articles = [];
 
+app.use(express.static('app'));
+
 var content = fs.readFile('./other/json/travel.json', { encoding: 'utf8' }, function (err, data) {
   if (err) throw err
   JSON.parse(data).forEach(function (article) {
@@ -19,11 +21,7 @@ var content = fs.readFile('./other/json/travel.json', { encoding: 'utf8' }, func
 
 // our first route
 app.get('/', function (req, res) {
-  var buffer = '';
-  articles.forEach(function(article){
-    buffer += `<a href="/${article.title}">${article.title}</a><br/>`
-  })
-  res.send(buffer);
+  res.sendFile(__dirname + '/views/index.html')
 });
 
 app.get(/Oslo.*/, function (req, res, next){
