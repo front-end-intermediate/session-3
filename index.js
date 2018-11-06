@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const fs = require('fs');
+const engines = require('consolidate');
 
 const app = express();
 const port = 9000;
@@ -10,10 +11,21 @@ const articles = [];
 
 app.use(express.static('app'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/storyimages/', express.static('app/img'));
+
+app.engine('hbs', engines.handlebars)
+app.set('views', './views')
+app.set('view engine', 'hbs')
 
 // our first route
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/views/index.html')
+app.get('/', (req, res) => {
+  db
+    .collection('entries')
+    .find()
+    .toArray((err, result) => {
+      if (err) return console.log(err);
+      res.render('index', { entries: result });
+    });
 });
 
 app.post('/entries', (req, res) => {
