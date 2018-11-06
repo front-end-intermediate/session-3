@@ -28,20 +28,11 @@
     <h1>Now on the app store!</h1>
   </header>
 
-{{#each entries as |entry|}}
 <div class="entry">
-<img src="/img/{{entry.multimedia}}.jpg" />
-<a href="/{{entry._id}}">{{entry.title}}</a>
-<p>{{entry._id}}</p>
+  <img src="/storyimages/{{entry.multimedia}}.jpg" />
+  <h3>{{entry.title}}</h3>
+  <p>{{entry.abstract}}</p>
 </div>
-{{/each}}
-
-  <form action="/entries" method="POST">
-    <input type="text" placeholder="Story Title" name="title">
-    <input type="text" placeholder="Enter 1, 2 or 3" name="multimedia">
-    <textarea type="text" placeholder="Story Abstract" name="abstract"></textarea>
-    <button type="submit">Submit</button>
-  </form>
 
 </body>
 </html>

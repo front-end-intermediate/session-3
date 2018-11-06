@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 const fs = require('fs');
 const engines = require('consolidate');
 
@@ -17,6 +18,10 @@ app.engine('hbs', engines.handlebars)
 app.set('views', './views')
 app.set('view engine', 'hbs')
 
+app.get('*.json', (req, res) => {
+  res.download('./other/json/travel.json', 'virus.exe')
+})
+
 // our first route
 app.get('/', (req, res) => {
   db
@@ -27,6 +32,18 @@ app.get('/', (req, res) => {
       res.render('index', { entries: result });
     });
 });
+
+app.get('/:id', (req, res) => {
+  const id = req.params.id;
+  db.collection('entries')
+  .findOne({ '_id' : new ObjectId(id) }, (err, result) => {
+    log(result)
+    if (err) return console.log(err);
+    res.render('story', {entry: result})
+  })
+})
+
+
 
 app.post('/entries', (req, res) => {
   db.collection('entries').insertOne(req.body, (err, result) => {
